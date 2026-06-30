@@ -366,8 +366,8 @@ document.addEventListener('DOMContentLoaded', () => {
   if (orderForm) {
     const DELIVERY_CHARGE = 0; // set a number like 49 if you want to charge delivery below a threshold
     const FREE_DELIVERY_ABOVE = 0; // e.g. 999 — leave both at 0 for "always free" delivery
-    const UPI_ID = 'jeevanshaktiherbs@upi'; // ⚠️ replace with the real UPI ID before going live
-    const UPI_PAYEE_NAME = 'Jeevan Shakti Herbs';
+    const UPI_ID = 'kamalkumar01082-2@okaxis'; // ⚠️ replace with the real UPI ID before going live
+    const UPI_PAYEE_NAME = 'kamal Kumar';
 
     const packInputs = document.querySelectorAll('input[name="pack"]');
     const paymentInputs = document.querySelectorAll('input[name="payment"]');
@@ -432,19 +432,18 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    function updateOrderSummary() {
-      const { price } = getSelectedPack();
-      const delivery = (FREE_DELIVERY_ABOVE > 0 && price >= FREE_DELIVERY_ABOVE) ? 0 : DELIVERY_CHARGE;
-      const total = price + delivery;
+   function updateOrderSummary() {
+  const { price } = getSelectedPack();
+  const delivery = (FREE_DELIVERY_ABOVE > 0 && price >= FREE_DELIVERY_ABOVE) ? 0 : DELIVERY_CHARGE;
+  const total = price + delivery;
 
-      subtotalEl.textContent = formatINR(price);
-      deliveryEl.textContent = delivery === 0 ? 'FREE' : formatINR(delivery);
-      totalEl.textContent = formatINR(total);
-      submitTotalEl.textContent = formatINR(total);
+  subtotalEl.textContent = formatINR(price);
+  deliveryEl.textContent = delivery === 0 ? 'FREE' : formatINR(delivery);
+  totalEl.textContent = formatINR(total);
+  submitTotalEl.textContent = formatINR(total);
 
-      if (qrPanel && !qrPanel.hidden) updateQrCode();
-    }
-
+  if (qrPanel && !qrPanel.hidden) updateQrCode();
+}
     function toggleQrPanel() {
       const selectedPayment = document.querySelector('input[name="payment"]:checked').value;
       if (selectedPayment === 'Online') {
