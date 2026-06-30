@@ -289,7 +289,7 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ---------- Contact Form Validation ---------- */
   const form = document.querySelector('#contact-form');
   if (form) {
-    const successMsg = document.querySelector('.form-success');
+    const successMsg = form.querySelector('.form-success');
 
     function setError(group, message) {
       group.classList.add('invalid');
@@ -333,30 +333,222 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       if (valid) {
+        // Build a formatted WhatsApp message from the form fields
+        const whatsappNumber = '919368443747'; // country code + number, no + or spaces
+        const messageLines = [
+          'Hello Jeevan Shakti Herbs! I have an inquiry from your website:',
+          '',
+          `*Name:* ${nameVal}`,
+          `*Phone:* ${phoneVal}`,
+          `*Email:* ${emailVal}`,
+          `*Message:* ${messageVal}`
+        ];
+        const encodedMessage = encodeURIComponent(messageLines.join('\n'));
+        const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
 
-        const whatsappNumber = "919368443747";
+        // Point the fallback link at the same URL in case the popup is blocked
+        const fallbackLink = successMsg.querySelector('.whatsapp-fallback-link');
+        if (fallbackLink) fallbackLink.href = whatsappURL;
 
-        const text =
-          `🌿 *New Order - Jeevan Shakti Herbs*
-
-👤 Name: ${nameVal}
-📞 Phone: ${phoneVal}
-📧 Email: ${emailVal}
-
-📝 Message:
-${messageVal}`;
-
-        const whatsappURL =
-          `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`;
-
-        window.open(whatsappURL, "_blank");
-
-        successMsg.classList.add("show");
-        form.reset();
+        successMsg.classList.add('show');
+        window.open(whatsappURL, '_blank', 'noopener');
 
         setTimeout(() => {
-          successMsg.classList.remove("show");
-        }, 6000);
+          successMsg.classList.remove('show');
+          form.reset();
+        }, 8000);
+      }
+    });
+  }
+
+  /* ---------- Order Now: Pricing + UPI QR + WhatsApp Order Submission ---------- */
+  const orderForm = document.querySelector('#order-form');
+  if (orderForm) {
+    const DELIVERY_CHARGE = 0; // set a number like 49 if you want to charge delivery below a threshold
+    const FREE_DELIVERY_ABOVE = 0; // e.g. 999 — leave both at 0 for "always free" delivery
+    const UPI_ID = 'jeevanshaktiherbs@upi'; // ⚠️ replace with the real UPI ID before going live
+    const UPI_PAYEE_NAME = 'Jeevan Shakti Herbs';
+
+    const packInputs = document.querySelectorAll('input[name="pack"]');
+    const paymentInputs = document.querySelectorAll('input[name="payment"]');
+    const subtotalEl = document.getElementById('summary-subtotal');
+    const deliveryEl = document.getElementById('summary-delivery');
+    const totalEl = document.getElementById('summary-total');
+    const submitTotalEl = document.getElementById('submit-total');
+    const qrPanel = document.getElementById('upi-qr-panel');
+    const qrImage = document.getElementById('upi-qr-image');
+    const qrError = document.getElementById('upi-qr-error');
+    const qrAmountEl = document.getElementById('upi-qr-amount');
+    const upiIdTextEl = document.getElementById('upi-id-text');
+    const copyBtn = document.getElementById('upi-copy-btn');
+
+    function formatINR(amount) {
+      return '₹' + amount.toLocaleString('en-IN');
+    }
+
+    function getSelectedPack() {
+      const checked = document.querySelector('input[name="pack"]:checked');
+      return {
+        price: checked ? parseInt(checked.getAttribute('data-price'), 10) : 0,
+        label: checked ? checked.getAttribute('data-label') : ''
+      };
+    }
+
+    function getCurrentTotal() {
+      const { price } = getSelectedPack();
+      const delivery = (FREE_DELIVERY_ABOVE > 0 && price >= FREE_DELIVERY_ABOVE) ? 0 : DELIVERY_CHARGE;
+      return price + delivery;
+    }
+
+    function buildUpiURI(amount) {
+      const params = new URLSearchParams({
+        pa: UPI_ID,
+        pn: UPI_PAYEE_NAME,
+        am: String(amount),
+        cu: 'INR',
+        tn: 'Magic Fat Cutter Order'
+      });
+      return `upi://pay?${params.toString()}`;
+    }
+
+    function updateQrCode() {
+      const total = getCurrentTotal();
+      const upiURI = buildUpiURI(total);
+      // Free, no-signup QR image generator — encodes the UPI URI as a scannable QR
+      qrImage.hidden = false;
+      qrError.hidden = true;
+      qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=${encodeURIComponent(upiURI)}`;
+      qrAmountEl.textContent = formatINR(total);
+    }
+
+    qrImage.addEventListener('error', () => {
+      qrImage.hidden = true;
+      qrError.hidden = false;
+    });
+    qrImage.addEventListener('load', () => {
+      if (qrImage.naturalWidth > 0) {
+        qrImage.hidden = false;
+        qrError.hidden = true;
+      }
+    });
+
+    function updateOrderSummary() {
+      const { price } = getSelectedPack();
+      const delivery = (FREE_DELIVERY_ABOVE > 0 && price >= FREE_DELIVERY_ABOVE) ? 0 : DELIVERY_CHARGE;
+      const total = price + delivery;
+
+      subtotalEl.textContent = formatINR(price);
+      deliveryEl.textContent = delivery === 0 ? 'FREE' : formatINR(delivery);
+      totalEl.textContent = formatINR(total);
+      submitTotalEl.textContent = formatINR(total);
+
+      if (qrPanel && !qrPanel.hidden) updateQrCode();
+    }
+
+    function toggleQrPanel() {
+      const selectedPayment = document.querySelector('input[name="payment"]:checked').value;
+      if (selectedPayment === 'Online') {
+        qrPanel.hidden = false;
+        updateQrCode();
+      } else {
+        qrPanel.hidden = true;
+      }
+    }
+
+    packInputs.forEach(input => input.addEventListener('change', updateOrderSummary));
+    paymentInputs.forEach(input => input.addEventListener('change', toggleQrPanel));
+    upiIdTextEl.textContent = UPI_ID;
+    updateOrderSummary(); // run once on load to reflect the pre-checked pack
+    toggleQrPanel(); // run once on load to reflect the pre-checked payment method
+
+    if (copyBtn) {
+      copyBtn.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(UPI_ID);
+          copyBtn.classList.add('copied');
+          setTimeout(() => copyBtn.classList.remove('copied'), 1800);
+        } catch (err) {
+          // Clipboard API unavailable (e.g. insecure context) — silently ignore
+        }
+      });
+    }
+
+    function setOrderError(group, message) {
+      group.classList.add('invalid');
+      group.querySelector('.error-msg').textContent = message;
+    }
+    function clearOrderError(group) {
+      group.classList.remove('invalid');
+    }
+
+    const orderSuccessMsg = orderForm.querySelector('.order-form-success');
+
+    orderForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      let valid = true;
+      orderSuccessMsg.classList.remove('show');
+
+      const nameGroup = orderForm.querySelector('#order-name').closest('.form-group');
+      const phoneGroup = orderForm.querySelector('#order-phone').closest('.form-group');
+      const addressGroup = orderForm.querySelector('#order-address').closest('.form-group');
+
+      const nameVal = orderForm.querySelector('#order-name').value.trim();
+      const phoneVal = orderForm.querySelector('#order-phone').value.trim();
+      const addressVal = orderForm.querySelector('#order-address').value.trim();
+      const paymentVal = orderForm.querySelector('input[name="payment"]:checked').value;
+
+      [nameGroup, phoneGroup, addressGroup].forEach(clearOrderError);
+
+      if (nameVal.length < 2) { setOrderError(nameGroup, 'Please enter your full name.'); valid = false; }
+
+      const phonePattern = /^[6-9]\d{9}$/;
+      if (!phonePattern.test(phoneVal.replace(/\D/g, '').slice(-10))) {
+        setOrderError(phoneGroup, 'Please enter a valid 10-digit phone number.'); valid = false;
+      }
+
+      if (addressVal.length < 10) {
+        setOrderError(addressGroup, 'Please enter your complete delivery address.'); valid = false;
+      }
+
+      if (valid) {
+        const { price, label } = getSelectedPack();
+        const delivery = (FREE_DELIVERY_ABOVE > 0 && price >= FREE_DELIVERY_ABOVE) ? 0 : DELIVERY_CHARGE;
+        const total = price + delivery;
+        const isOnline = paymentVal === 'Online';
+
+        const whatsappNumber = '919368443747'; // country code + number, no + or spaces
+        const messageLines = [
+          'Hello Jeevan Shakti Herbs! I would like to place an order:',
+          '',
+          `*Product:* Magic Fat Cutter`,
+          `*Pack:* ${label}`,
+          `*Price:* ${formatINR(price)}`,
+          `*Delivery:* ${delivery === 0 ? 'FREE' : formatINR(delivery)}`,
+          `*Total Amount:* ${formatINR(total)}`,
+          `*Payment Method:* ${isOnline ? `Pay Online (UPI QR scanned — ${UPI_ID})` : 'Cash on Delivery'}`,
+          '',
+          `*Name:* ${nameVal}`,
+          `*Phone:* ${phoneVal}`,
+          `*Delivery Address:* ${addressVal}`
+        ];
+        if (isOnline) {
+          messageLines.push('', "I've scanned the QR and will share my payment screenshot here.");
+        }
+        const encodedMessage = encodeURIComponent(messageLines.join('\n'));
+        const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+
+        const fallbackLink = orderSuccessMsg.querySelector('.order-fallback-link');
+        if (fallbackLink) fallbackLink.href = whatsappURL;
+
+        orderSuccessMsg.classList.add('show');
+        window.open(whatsappURL, '_blank', 'noopener');
+
+        setTimeout(() => {
+          orderSuccessMsg.classList.remove('show');
+          orderForm.reset();
+          updateOrderSummary();
+          toggleQrPanel();
+        }, 9000);
       }
     });
   }

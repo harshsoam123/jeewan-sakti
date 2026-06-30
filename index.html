@@ -135,7 +135,7 @@
       <li><a href="#gallery">Gallery</a></li>
       <li><a href="#faq">FAQ</a></li>
       <li><a href="#contact">Contact</a></li>
-      <li class="nav-order"><a href="#product" class="btn btn-primary btn-sm">Order Now</a></li>
+      <li class="nav-order"><a href="#order" class="btn btn-primary btn-sm">Order Now</a></li>
     </ul>
 
     <div class="nav-actions">
@@ -169,7 +169,7 @@
         </p>
 
         <div class="hero-ctas">
-          <a href="#product" class="btn btn-primary">Order Now</a>
+          <a href="#order" class="btn btn-primary">Order Now</a>
           <a href="#contact" class="btn btn-outline">Contact Us</a>
         </div>
 
@@ -266,7 +266,7 @@
 
       <div class="product-card" data-reveal>
         <div class="product-visual">
-          <img src="WhatsApp Image 2026-06-28 at 2.48.25 PM.jpeg" alt="Magic Fat Cutter Ayurvedic supplement bottle by Jeevan Shakti Herbs" class="jar-illustration">
+          <img src="WhatsApp Image 2026-06-29 at 11.11.28 AM-removebg-preview-removebg-preview (1)-removebg-preview.jpg" alt="Magic Fat Cutter Ayurvedic supplement bottle by Jeevan Shakti Herbs" class="jar-illustration">
         </div>
 
         <div class="product-copy">
@@ -306,11 +306,152 @@
           </div>
 
           <div class="product-cta-row">
-            <a href="#contact" class="btn btn-primary">Order Now</a>
+            <a href="#order" class="btn btn-primary">Order Now</a>
             <a href="https://wa.me/919368443747" target="_blank" rel="noopener" class="btn btn-outline">Ask on WhatsApp</a>
           </div>
 
           <p class="disclaimer-note">Magic Fat Cutter is an Ayurvedic wellness supplement intended to complement a healthy lifestyle. It is not intended to diagnose, treat, cure or prevent any disease. Individual results may vary.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ORDER NOW ============ -->
+  <section class="order-section section-pad" id="order">
+    <div class="container">
+      <div class="section-head center" data-reveal>
+        <span class="eyebrow">Place Your Order</span>
+        <h2 class="section-title">Order Magic Fat Cutter</h2>
+        <p class="section-sub">Choose your pack, pick Cash on Delivery or pay online, and send your order straight to us on WhatsApp — no account or signup needed.</p>
+      </div>
+
+      <div class="order-card" data-reveal>
+        <!-- ===== Pricing / Pack Selection ===== -->
+        <div class="order-pricing">
+          <span class="sp-eyebrow">Step 1 — Choose Your Pack</span>
+          <div class="pack-options" id="pack-options">
+            <label class="pack-option">
+              <input type="radio" name="pack" value="1" data-price="999" data-label="1 Bottle (30 Tablets)">
+              <div class="pack-option-card">
+                <span class="pack-qty">1 Bottle</span>
+                <span class="pack-sub">30 Tablets · 30-Day Supply</span>
+                <span class="pack-price">₹999</span>
+              </div>
+            </label>
+            <label class="pack-option">
+              <input type="radio" name="pack" value="2" data-price="1849" data-label="2 Bottles (60 Tablets)" checked>
+              <div class="pack-option-card">
+                <span class="pack-badge">Most Popular</span>
+                <span class="pack-qty">2 Bottles</span>
+                <span class="pack-sub">60 Tablets · 60-Day Supply</span>
+                <span class="pack-price">₹1,849 <small>₹1,998</small></span>
+              </div>
+            </label>
+            <label class="pack-option">
+              <input type="radio" name="pack" value="3" data-price="2599" data-label="3 Bottles (90 Tablets)">
+              <div class="pack-option-card">
+                <span class="pack-badge pack-badge-save">Best Value</span>
+                <span class="pack-qty">3 Bottles</span>
+                <span class="pack-sub">90 Tablets · 90-Day Supply</span>
+                <span class="pack-price">₹2,599 <small>₹2,997</small></span>
+              </div>
+            </label>
+          </div>
+
+          <div class="order-summary">
+            <div class="summary-row">
+              <span>Subtotal</span>
+              <span id="summary-subtotal">₹1,849</span>
+            </div>
+            <div class="summary-row">
+              <span>Delivery Charges</span>
+              <span id="summary-delivery">FREE</span>
+            </div>
+            <div class="summary-row summary-total">
+              <span>Total Amount</span>
+              <span id="summary-total">₹1,849</span>
+            </div>
+            <p class="summary-note">Free delivery on all orders. COD available across India.</p>
+          </div>
+        </div>
+
+        <!-- ===== Order Form ===== -->
+        <div class="order-form-wrap">
+          <span class="sp-eyebrow">Step 2 — Your Details</span>
+          <form id="order-form" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="order-name">Full Name</label>
+                <input type="text" id="order-name" name="name" placeholder="Your full name" autocomplete="name">
+                <span class="error-msg">Please enter your full name.</span>
+              </div>
+              <div class="form-group">
+                <label for="order-phone">Phone Number</label>
+                <input type="tel" id="order-phone" name="phone" placeholder="10-digit mobile number" autocomplete="tel">
+                <span class="error-msg">Please enter a valid 10-digit phone number.</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="order-address">Full Delivery Address</label>
+              <textarea id="order-address" name="address" rows="3" placeholder="House no., street, city, state, PIN code"></textarea>
+              <span class="error-msg">Please enter your complete delivery address.</span>
+            </div>
+
+            <div class="form-group">
+              <label>Payment Method</label>
+              <div class="payment-options">
+                <label class="payment-option">
+                  <input type="radio" name="payment" value="COD" checked>
+                  <div class="payment-option-card">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 10h20M6 15h4"/></svg>
+                    <div>
+                      <strong>Cash on Delivery</strong>
+                      <span>Pay when your order arrives</span>
+                    </div>
+                  </div>
+                </label>
+                <label class="payment-option">
+                  <input type="radio" name="payment" value="Online">
+                  <div class="payment-option-card">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/><path d="M6 15h2"/></svg>
+                    <div>
+                      <strong>Pay Online</strong>
+                      <span>Scan the UPI QR code to pay instantly</span>
+                    </div>
+                  </div>
+                </label>
+              </div>
+
+              <div class="upi-qr-panel" id="upi-qr-panel" hidden>
+                <div class="upi-qr-image-wrap">
+                  <img id="upi-qr-image" src="" alt="UPI QR code to pay Jeevan Shakti Herbs" width="180" height="180" loading="lazy">
+                  <p class="upi-qr-error" id="upi-qr-error" hidden>QR code couldn't load. Please use the UPI ID below to pay manually.</p>
+                </div>
+                <div class="upi-qr-details">
+                  <span class="sp-eyebrow">Scan &amp; Pay via UPI</span>
+                  <p class="upi-qr-amount">Amount: <strong id="upi-qr-amount">₹1,849</strong></p>
+                  <p class="upi-qr-id">UPI ID: <code id="upi-id-text">jeevanshaktiherbs@upi</code>
+                    <button type="button" class="upi-copy-btn" id="upi-copy-btn" aria-label="Copy UPI ID">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                    </button>
+                  </p>
+                  <p class="upi-qr-note">After paying, take a screenshot of your payment confirmation — we'll ask for it on WhatsApp to verify your order.</p>
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block btn-order-submit">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+              Confirm Order on WhatsApp — <span id="submit-total">₹1,849</span>
+            </button>
+
+            <div class="form-success order-form-success">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
+              <span>Opening WhatsApp with your order details... If it didn't open, <a href="#" class="whatsapp-fallback-link order-fallback-link">tap here to send it manually</a>.</span>
+            </div>
+
+            <p class="disclaimer-note">By placing an order you agree to be contacted on WhatsApp to confirm delivery details. Magic Fat Cutter is a dietary supplement and not intended to diagnose, treat, cure or prevent any disease.</p>
+          </form>
         </div>
       </div>
     </div>
@@ -420,27 +561,27 @@
 
       <div class="gallery-grid" data-reveal>
         <div class="gallery-item" data-caption="Magic Fat Cutter — front view">
-          <div class="gallery-visual"><img src="WhatsApp Image 2026-06-28 at 2.48.23 PM.jpeg" alt="Magic Fat Cutter bottle front view" loading="lazy"></div>
+          <div class="gallery-visual"><img src="WhatsApp Image 2026-06-28 at 2.48.24 PM.jpeg" alt="Magic Fat Cutter bottle front view" loading="lazy"></div>
           <div class="gallery-overlay"><span>Magic Fat Cutter — Front View</span></div>
           <div class="gallery-zoom-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg></div>
         </div>
         <div class="gallery-item" data-caption="Herbal ingredients used in our formulations">
-          <div class="gallery-visual"><img src="WhatsApp Image 2026-06-28 at 2.48.24 PM.jpeg" alt="Herbal ingredients and Magic Fat Cutter capsules with tea being prepared" loading="lazy"></div>
+          <div class="gallery-visual"><img src="WhatsApp Image 2026-06-28 at 2.48.26 PM (1).jpeg" alt="Herbal ingredients and Magic Fat Cutter capsules with tea being prepared" loading="lazy"></div>
           <div class="gallery-overlay"><span>Naturally Sourced Herbs</span></div>
           <div class="gallery-zoom-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg></div>
         </div>
         <div class="gallery-item" data-caption="Carefully sealed for freshness">
-          <div class="gallery-visual"><img src="WhatsApp Image 2026-06-28 at 2.48.26 PM (1).jpeg" alt="Magic Fat Cutter sealed product box" loading="lazy"></div>
+          <div class="gallery-visual"><img src="WhatsApp Image 2026-06-28 at 2.48.28 PM.jpeg" alt="Magic Fat Cutter sealed product box" loading="lazy"></div>
           <div class="gallery-overlay"><span>Sealed for Freshness</span></div>
           <div class="gallery-zoom-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg></div>
         </div>
         <div class="gallery-item" data-caption="Magic Fat Cutter — label detail">
-          <div class="gallery-visual"><img src="assets/images/lifestyle-flatlay-marble.jpeg" alt="Magic Fat Cutter label and ingredient detail on marble counter" loading="lazy"></div>
+          <div class="gallery-visual"><img src="WhatsApp Image 2026-06-28 at 2.48.26 PM (1).jpeg" alt="Magic Fat Cutter label and ingredient detail on marble counter" loading="lazy"></div>
           <div class="gallery-overlay"><span>Label Detail — Suggested Usage</span></div>
           <div class="gallery-zoom-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg></div>
         </div>
         <div class="gallery-item" data-caption="Crafted in small, quality-checked batches">
-          <div class="gallery-visual"><img src="assets/images/lifestyle-yoga-lemon.jpeg" alt="Magic Fat Cutter bottle and box with natural ingredients" loading="lazy"></div>
+          <div class="gallery-visual"><img src="ChatGPT Image Jun 30, 2026, 10_45_35 AM.png" alt="Magic Fat Cutter bottle and box with natural ingredients" loading="lazy"></div>
           <div class="gallery-overlay"><span>Quality-Checked Batches</span></div>
           <div class="gallery-zoom-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg></div>
         </div>
@@ -636,7 +777,7 @@
             <button type="submit" class="btn btn-primary btn-block">Send Message</button>
             <div class="form-success">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
-              <span>Thank you! Your message has been received — we'll get back to you shortly.</span>
+              <span>Opening WhatsApp with your message... If it didn't open, <a href="#" class="whatsapp-fallback-link">tap here to send it manually</a>.</span>
             </div>
           </form>
         </div>
