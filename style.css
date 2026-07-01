@@ -1614,3 +1614,21 @@ html[data-theme="dark"] .form-success { color: var(--ink); }
 @media (hover: none) {
   .cursor-dot, .cursor-ring { display: none; }
 }
+/* ===== HORIZONTAL OVERFLOW FIX ===== */
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+.hero .container {
+  overflow-x: hidden;
+}
+
+.hero-visual {
+  overflow: hidden;
+  max-width: 100%;
+}
+
+.ring-decor {
+  display: none;
+}
