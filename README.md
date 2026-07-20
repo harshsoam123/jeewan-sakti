@@ -15,7 +15,6 @@ jeevan-shakti/
 ├── assets/images/        → empty by default (see its own README.md)
 └── README.md             → this file
 ```
-
 ## Design language
 
 The site uses an "herbarium ledger" direction rather than a generic

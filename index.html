@@ -104,6 +104,7 @@
   ]
 }
 </script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </head>
 <body>
 
@@ -159,7 +160,7 @@
 
     <div class="container">
       <div class="hero-content">
-        <span class="eyebrow hero-eyebrow">Rooted in Tradition</span>
+        <span class="eyebrow hero-eyebrow"><h1>Rooted in Tradition</h1></span>
         <h1 class="hero-title">
           Transform Your<br>
           Wellness <span class="typed-wrap"></span><span class="cursor-blink" aria-hidden="true"></span>
@@ -214,7 +215,7 @@
       <div class="about-grid">
         <div class="about-visual" data-reveal>
           <div class="leaf-frame">
-            <img src="WhatsApp Image 2026-06-28 at 2.48.29 PM.jpeg" alt="Healthcare professional discussing Magic Fat Cutter with a customer" loading="lazy">
+            <img src="leaf_frame_photo.jpeg" alt="Healthcare professional discussing Magic Fat Cutter with a customer" loading="lazy">
           </div>
           <div class="float-card">
             <strong><span data-counter="3" data-suffix="">0</span>+</strong>
@@ -223,8 +224,8 @@
         </div>
 
         <div class="about-copy">
-          <span class="eyebrow">Our Story</span>
-          <h2 class="section-title" data-reveal>Ayurveda, practiced with patience and precision</h2>
+          <span class="eyebrow"><h1>Our Story</h1></span>
+          <h3 class="section-title" data-reveal>Ayurveda, practiced with patience and precision</h3>
           <p data-reveal>Jeevan Shakti Herbs is dedicated to providing 100% Ayurvedic medicines made from carefully selected natural herbs. We believe wellness isn't a quick fix — it's a relationship with your body, built over time through ingredients nature already trusts.</p>
           <p data-reveal data-reveal-delay="1">Every formulation we create is guided by traditional Ayurvedic principles and refined with modern quality practices, so you receive a product that honours both heritage and rigour.</p>
 
@@ -411,7 +412,7 @@
                   </div>
                 </label>
                 <label class="payment-option">
-                  <input type="radio" name="payment" value="Online">
+                  <input type="radio" name="payment" value="Razorpay">
                   <div class="payment-option-card">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/><path d="M6 15h2"/></svg>
                     <div>
@@ -421,24 +422,12 @@
                   </div>
                 </label>
               </div>
-
-              <div class="upi-qr-panel" id="upi-qr-panel" hidden>
-                <div class="upi-qr-image-wrap">
-                  <img id="upi-qr-image" src="" alt="UPI QR code to pay Jeevan Shakti Herbs" width="180" height="180" loading="lazy">
-                  <p class="upi-qr-error" id="upi-qr-error" hidden>QR code couldn't load. Please use the UPI ID below to pay manually.</p>
-                </div>
-                <div class="upi-qr-details">
-                  <span class="sp-eyebrow">Scan &amp; Pay via UPI</span>
-                  <p class="upi-qr-amount">Amount: <strong id="upi-qr-amount">2499</strong></p>
-                  <p class="upi-qr-id">UPI ID: <code id="upi-id-text">kamalkumar01082-2@okaxis</code>
-                    <button type="button" class="upi-copy-btn" id="upi-copy-btn" aria-label="Copy UPI ID">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-                    </button>
-                  </p>
-                  <p class="upi-qr-note">After paying, take a screenshot of your payment confirmation — we'll ask for it on WhatsApp to verify your order.</p>
-                </div>
-              </div>
             </div>
+            <div class="razorpay-panel" id="razorpay-panel" hidden style="margin-top:1rem; background:var(--parchment-warm); border:1px solid var(--line); border-left:3px solid var(--turmeric); border-radius:var(--radius-md); padding:1.2rem;">
+  <p style="font-size:0.9rem; color:var(--ink-soft); margin-bottom:1rem;">Click below to securely pay <strong id="rzp-amount-display">₹2,499</strong> via Razorpay.</p>
+  <button type="button" id="razorpay-pay-btn" class="btn btn-primary btn-block">Pay Now with Razorpay</button>
+  <p id="rzp-status" style="font-size:0.8rem; color:var(--primary-green); margin-top:0.7rem; display:none;"></p>
+</div>
 
             <button type="submit" class="btn btn-primary btn-block btn-order-submit">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
@@ -561,12 +550,21 @@
 
       <div class="gallery-grid" data-reveal>
         <div class="gallery-item" data-caption="Magic Fat Cutter — front view">
-          <div class="gallery-visual"><img src="WhatsApp Image 2026-06-28 at 2.48.23 PM.jpeg" alt="Magic Fat Cutter bottle front view" loading="lazy" controls></div>
+          <div class="gallery-visual"><div class="video-wrap">
+  <iframe 
+    src="https://youtu.be/pSt5KUlCYds?si=6atSMmmu7BuPJ0Bv" 
+    title="Jeevan Shakti Herbs Video" 
+    frameborder="0" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+    allowfullscreen
+    loading="lazy">
+  </iframe>
+</div></div>
           <div class="gallery-overlay"><span>Magic Fat Cutter — Front View</span></div>
           <div class="gallery-zoom-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg></div>
         </div>
         <div class="gallery-item" data-caption="Herbal ingredients used in our formulations">
-          <div class="gallery-visual"><img src="WhatsApp Image 2026-06-28 at 2.48.24 PM.jpeg" alt="Herbal ingredients and Magic Fat Cutter capsules with tea being prepared" loading="lazy"></div>
+          <div class="gallery-visual"><img src="source_herbs.jpeg" alt="Herbal ingredients and Magic Fat Cutter capsules with tea being prepared" loading="lazy"></div>
           <div class="gallery-overlay"><span>Naturally Sourced Herbs</span></div>
           <div class="gallery-zoom-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg></div>
         </div>
@@ -898,5 +896,123 @@
 
 <script>document.getElementById('footer-year').textContent = new Date().getFullYear();</script>
 <script src="script.js"></script>
+<script>
+(function () {
+  const paymentRadios = document.querySelectorAll('input[name="payment"]');
+  const rzpPanel = document.getElementById('razorpay-panel');
+  const rzpAmountDisplay = document.getElementById('rzp-amount-display');
+  const rzpStatus = document.getElementById('rzp-status');
+  const payBtn = document.getElementById('razorpay-pay-btn');
+  let lastPaymentId = '';
+
+  function getSelectedPack() {
+    const checked = document.querySelector('input[name="pack"]:checked');
+    return checked ? checked.value : null;
+  }
+  function getSelectedAmount() {
+    const checked = document.querySelector('input[name="pack"]:checked');
+    return checked ? parseInt(checked.getAttribute('data-price'), 10) : 0;
+  }
+  function updateRzpAmount() {
+    rzpAmountDisplay.textContent = '₹' + getSelectedAmount().toLocaleString('en-IN');
+    rzpStatus.style.display = 'none';
+  }
+
+  paymentRadios.forEach(r => r.addEventListener('change', () => {
+    if (r.value === 'Razorpay' && r.checked) {
+      rzpPanel.hidden = false;
+      updateRzpAmount();
+    } else {
+      rzpPanel.hidden = true;
+    }
+  }));
+  document.querySelectorAll('input[name="pack"]').forEach(r => r.addEventListener('change', updateRzpAmount));
+
+  payBtn.addEventListener('click', async function () {
+    const name = document.getElementById('order-name').value.trim();
+    const phone = document.getElementById('order-phone').value.trim();
+    const pack = getSelectedPack();
+
+    if (!name || !phone) {
+      alert('Please enter your name and phone number before paying.');
+      return;
+    }
+
+    payBtn.disabled = true;
+    payBtn.textContent = 'Please wait...';
+
+    try {
+      const orderRes = await fetch('create-order.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pack })
+      });
+      const orderData = await orderRes.json();
+
+      if (!orderRes.ok) {
+        alert('Could not start payment: ' + (orderData.error || 'Unknown error'));
+        payBtn.disabled = false;
+        payBtn.textContent = 'Pay Now with Razorpay';
+        return;
+      }
+
+      const options = {
+        key: orderData.key_id,
+        amount: orderData.amount,
+        currency: orderData.currency,
+        order_id: orderData.order_id,
+        name: "Jeevan Shakti Herbs",
+        description: "Magic Fat Cutter Order",
+        image: "Gemini_Generated_Image_wj06xawj06xawj06.png",
+        prefill: { name: name, contact: phone },
+        theme: { color: "#1F6B3D" },
+        handler: async function (response) {
+          const verifyRes = await fetch('verify-payment.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature
+            })
+          });
+          const verifyData = await verifyRes.json();
+
+          if (verifyData.success) {
+            lastPaymentId = verifyData.payment_id;
+            rzpStatus.style.display = 'block';
+            rzpStatus.textContent = '✓ Payment verified! Payment ID: ' + lastPaymentId + '. Now click "Confirm Order on WhatsApp" below.';
+          } else {
+            alert('Payment could not be verified. Please contact us on WhatsApp with your payment details.');
+          }
+          payBtn.disabled = false;
+          payBtn.textContent = 'Pay Now with Razorpay';
+        },
+        modal: {
+          ondismiss: function () {
+            payBtn.disabled = false;
+            payBtn.textContent = 'Pay Now with Razorpay';
+          }
+        }
+      };
+
+      const rzp = new Razorpay(options);
+      rzp.on('payment.failed', function (response) {
+        alert('Payment failed: ' + response.error.description);
+        payBtn.disabled = false;
+        payBtn.textContent = 'Pay Now with Razorpay';
+      });
+      rzp.open();
+
+    } catch (err) {
+      alert('Something went wrong. Please try again or contact us on WhatsApp.');
+      payBtn.disabled = false;
+      payBtn.textContent = 'Pay Now with Razorpay';
+    }
+  });
+
+  window.getRazorpayPaymentId = function () { return lastPaymentId; };
+})();
+</script>
 </body>
 </html>

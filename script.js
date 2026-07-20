@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ---------- Hero Typing Effect ---------- */
   const typedEl = document.querySelector('.typed-wrap');
   if (typedEl) {
-    const phrases = ['Naturally.', 'Ayurvedically.', 'Sustainably.'];
+    const phrases = ['Naturally.'];
     let pIndex = 0, charIndex = 0, deleting = false;
 
     function typeLoop() {
