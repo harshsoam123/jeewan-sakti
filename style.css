@@ -756,7 +756,7 @@ html, body { overflow-x: hidden; max-width: 100%; }
   width: 100%;
   max-width: 800px;
   aspect-ratio: 16/9;
-  margin: 2rem auto;
+  margin: 3rem auto;
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: var(--shadow-soft);

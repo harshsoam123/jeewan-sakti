@@ -13,12 +13,12 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('load', () => {
     setTimeout(() => loader && loader.classList.add('hidden'), 350);
   });
-  // Fallback in case 'load' already fired or assets are slow
   setTimeout(() => loader && loader.classList.add('hidden'), 2500);
 
   /* ---------- Sticky Navbar ---------- */
   const navbar = document.querySelector('.navbar');
   const onScroll = () => {
+    if (!navbar) return;
     if (window.scrollY > 30) navbar.classList.add('scrolled');
     else navbar.classList.remove('scrolled');
     updateActiveNav();
@@ -29,17 +29,19 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ---------- Mobile Hamburger ---------- */
   const hamburger = document.querySelector('.hamburger');
   const navLinks = document.querySelector('.nav-links');
-  hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('active');
-    navLinks.classList.toggle('open');
-    hamburger.setAttribute('aria-expanded', navLinks.classList.contains('open'));
-  });
-  navLinks.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-      hamburger.classList.remove('active');
-      navLinks.classList.remove('open');
+  if (hamburger && navLinks) {
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      navLinks.classList.toggle('open');
+      hamburger.setAttribute('aria-expanded', navLinks.classList.contains('open'));
     });
-  });
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        navLinks.classList.remove('open');
+      });
+    });
+  }
 
   /* ---------- Active Nav Link on Scroll ---------- */
   const sections = document.querySelectorAll('section[id]');
@@ -63,39 +65,43 @@ document.addEventListener('DOMContentLoaded', () => {
   })();
   if (savedTheme) root.setAttribute('data-theme', savedTheme);
 
-  themeToggle.addEventListener('click', () => {
-    const isDark = root.getAttribute('data-theme') === 'dark';
-    const next = isDark ? 'light' : 'dark';
-    if (next === 'dark') root.setAttribute('data-theme', 'dark');
-    else root.removeAttribute('data-theme');
-    try { localStorage.setItem('jsh-theme', next); } catch (e) { /* storage unavailable */ }
-  });
+  if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+      const isDark = root.getAttribute('data-theme') === 'dark';
+      const next = isDark ? 'light' : 'dark';
+      if (next === 'dark') root.setAttribute('data-theme', 'dark');
+      else root.removeAttribute('data-theme');
+      try { localStorage.setItem('jsh-theme', next); } catch (e) { /* storage unavailable */ }
+    });
+  }
 
   /* ---------- Custom Cursor (desktop pointer only) ---------- */
   if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
     const dot = document.querySelector('.cursor-dot');
     const ring = document.querySelector('.cursor-ring');
-    let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+    if (dot && ring) {
+      let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
 
-    window.addEventListener('mousemove', e => {
-      mouseX = e.clientX; mouseY = e.clientY;
-      dot.style.left = mouseX + 'px';
-      dot.style.top = mouseY + 'px';
-    });
+      window.addEventListener('mousemove', e => {
+        mouseX = e.clientX; mouseY = e.clientY;
+        dot.style.left = mouseX + 'px';
+        dot.style.top = mouseY + 'px';
+      });
 
-    function animateRing() {
-      ringX += (mouseX - ringX) * 0.18;
-      ringY += (mouseY - ringY) * 0.18;
-      ring.style.left = ringX + 'px';
-      ring.style.top = ringY + 'px';
-      requestAnimationFrame(animateRing);
+      function animateRing() {
+        ringX += (mouseX - ringX) * 0.18;
+        ringY += (mouseY - ringY) * 0.18;
+        ring.style.left = ringX + 'px';
+        ring.style.top = ringY + 'px';
+        requestAnimationFrame(animateRing);
+      }
+      animateRing();
+
+      document.querySelectorAll('a, button, .gallery-item, input, textarea').forEach(el => {
+        el.addEventListener('mouseenter', () => ring.classList.add('hovering'));
+        el.addEventListener('mouseleave', () => ring.classList.remove('hovering'));
+      });
     }
-    animateRing();
-
-    document.querySelectorAll('a, button, .gallery-item, input, textarea').forEach(el => {
-      el.addEventListener('mouseenter', () => ring.classList.add('hovering'));
-      el.addEventListener('mouseleave', () => ring.classList.remove('hovering'));
-    });
   }
 
   /* ---------- Hero Floating Leaves (generated) ---------- */
@@ -191,46 +197,58 @@ document.addEventListener('DOMContentLoaded', () => {
   const lightboxInner = document.querySelector('.lightbox-content');
   let galleryIndex = 0;
 
-  function renderLightbox(index) {
-    const item = galleryItems[index];
-    const visualHTML = item.querySelector('.gallery-visual').innerHTML;
-    const caption = item.getAttribute('data-caption') || '';
-    lightboxInner.innerHTML = `<div class="lightbox-content-inner">${visualHTML}</div><span class="lightbox-caption">${caption}</span>`;
-  }
+  if (lightbox && lightboxInner && galleryItems.length) {
+    function renderLightbox(index) {
+      const item = galleryItems[index];
+      const visual = item.querySelector('.gallery-visual');
+      const visualHTML = visual ? visual.innerHTML : '';
+      const caption = item.getAttribute('data-caption') || '';
+      lightboxInner.innerHTML = `<div class="lightbox-content-inner">${visualHTML}</div><span class="lightbox-caption">${caption}</span>`;
+    }
 
-  galleryItems.forEach((item, idx) => {
-    item.addEventListener('click', () => {
-      galleryIndex = idx;
-      renderLightbox(galleryIndex);
-      lightbox.classList.add('active');
+    galleryItems.forEach((item, idx) => {
+      item.addEventListener('click', () => {
+        galleryIndex = idx;
+        renderLightbox(galleryIndex);
+        lightbox.classList.add('active');
+      });
     });
-  });
 
-  function closeLightbox() { lightbox.classList.remove('active'); }
-  document.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
-  lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+    function closeLightbox() { lightbox.classList.remove('active'); }
+    const closeBtn = document.querySelector('.lightbox-close');
+    const nextBtn = document.querySelector('.lightbox-next');
+    const prevBtn = document.querySelector('.lightbox-prev');
 
-  document.querySelector('.lightbox-next').addEventListener('click', () => {
-    galleryIndex = (galleryIndex + 1) % galleryItems.length;
-    renderLightbox(galleryIndex);
-  });
-  document.querySelector('.lightbox-prev').addEventListener('click', () => {
-    galleryIndex = (galleryIndex - 1 + galleryItems.length) % galleryItems.length;
-    renderLightbox(galleryIndex);
-  });
-  document.addEventListener('keydown', (e) => {
-    if (!lightbox.classList.contains('active')) return;
-    if (e.key === 'Escape') closeLightbox();
-    if (e.key === 'ArrowRight') document.querySelector('.lightbox-next').click();
-    if (e.key === 'ArrowLeft') document.querySelector('.lightbox-prev').click();
-  });
+    if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+
+    if (nextBtn) {
+      nextBtn.addEventListener('click', () => {
+        galleryIndex = (galleryIndex + 1) % galleryItems.length;
+        renderLightbox(galleryIndex);
+      });
+    }
+    if (prevBtn) {
+      prevBtn.addEventListener('click', () => {
+        galleryIndex = (galleryIndex - 1 + galleryItems.length) % galleryItems.length;
+        renderLightbox(galleryIndex);
+      });
+    }
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('active')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowRight' && nextBtn) nextBtn.click();
+      if (e.key === 'ArrowLeft' && prevBtn) prevBtn.click();
+    });
+  }
 
   /* ---------- Testimonial Slider ---------- */
   const tCards = document.querySelectorAll('.t-card');
   const tDotsWrap = document.querySelector('.t-nav');
-  let tIndex = 0, tInterval;
 
-  if (tCards.length) {
+  if (tCards.length && tDotsWrap) {
+    let tIndex = 0, tInterval;
+
     tCards.forEach((_, i) => {
       const dot = document.createElement('button');
       dot.className = 't-dot' + (i === 0 ? ' active' : '');
@@ -242,14 +260,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function goToTestimonial(i) {
       tCards[tIndex].classList.remove('active');
-      tDots[tIndex].classList.remove('active');
+      if (tDots[tIndex]) tDots[tIndex].classList.remove('active');
       tIndex = i;
       tCards[tIndex].classList.add('active');
-      tDots[tIndex].classList.add('active');
+      if (tDots[tIndex]) tDots[tIndex].classList.add('active');
     }
 
     function nextTestimonial() { goToTestimonial((tIndex + 1) % tCards.length); }
-
     function startAutoplay() { tInterval = setInterval(nextTestimonial, 5500); }
     function stopAutoplay() { clearInterval(tInterval); }
 
@@ -257,21 +274,26 @@ document.addEventListener('DOMContentLoaded', () => {
     startAutoplay();
 
     const slider = document.querySelector('.t-slider');
-    slider.addEventListener('mouseenter', stopAutoplay);
-    slider.addEventListener('mouseleave', startAutoplay);
+    if (slider) {
+      slider.addEventListener('mouseenter', stopAutoplay);
+      slider.addEventListener('mouseleave', startAutoplay);
+    }
   }
 
   /* ---------- FAQ Accordion ---------- */
   document.querySelectorAll('.faq-item').forEach(item => {
     const question = item.querySelector('.faq-question');
     const answer = item.querySelector('.faq-answer');
+    if (!question || !answer) return;
     question.addEventListener('click', () => {
       const isOpen = item.classList.contains('open');
       document.querySelectorAll('.faq-item.open').forEach(openItem => {
         if (openItem !== item) {
           openItem.classList.remove('open');
-          openItem.querySelector('.faq-answer').style.maxHeight = null;
-          openItem.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+          const openAnswer = openItem.querySelector('.faq-answer');
+          const openQuestion = openItem.querySelector('.faq-question');
+          if (openAnswer) openAnswer.style.maxHeight = null;
+          if (openQuestion) openQuestion.setAttribute('aria-expanded', 'false');
         }
       });
       if (isOpen) {
@@ -293,7 +315,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function setError(group, message) {
       group.classList.add('invalid');
-      group.querySelector('.error-msg').textContent = message;
+      const msg = group.querySelector('.error-msg');
+      if (msg) msg.textContent = message;
     }
     function clearError(group) {
       group.classList.remove('invalid');
@@ -302,7 +325,7 @@ document.addEventListener('DOMContentLoaded', () => {
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       let valid = true;
-      successMsg.classList.remove('show');
+      if (successMsg) successMsg.classList.remove('show');
 
       const nameGroup = form.querySelector('#field-name').closest('.form-group');
       const phoneGroup = form.querySelector('#field-phone').closest('.form-group');
@@ -333,8 +356,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       if (valid) {
-        // Build a formatted WhatsApp message from the form fields
-        const whatsappNumber = '919368443747'; // country code + number, no + or spaces
+        const whatsappNumber = '919368443747';
         const messageLines = [
           'Hello Jeevan Shakti Herbs! I have an inquiry from your website:',
           '',
@@ -346,27 +368,26 @@ document.addEventListener('DOMContentLoaded', () => {
         const encodedMessage = encodeURIComponent(messageLines.join('\n'));
         const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
 
-        // Point the fallback link at the same URL in case the popup is blocked
-        const fallbackLink = successMsg.querySelector('.whatsapp-fallback-link');
+        const fallbackLink = successMsg ? successMsg.querySelector('.whatsapp-fallback-link') : null;
         if (fallbackLink) fallbackLink.href = whatsappURL;
 
-        successMsg.classList.add('show');
+        if (successMsg) successMsg.classList.add('show');
         window.open(whatsappURL, '_blank', 'noopener');
 
         setTimeout(() => {
-          successMsg.classList.remove('show');
+          if (successMsg) successMsg.classList.remove('show');
           form.reset();
         }, 8000);
       }
     });
   }
 
-  /* ---------- Order Now: Pricing + UPI QR + WhatsApp Order Submission ---------- */
+  /* ---------- Order Now: Pricing + (optional) UPI QR + WhatsApp Order Submission ---------- */
   const orderForm = document.querySelector('#order-form');
   if (orderForm) {
-    const DELIVERY_CHARGE = 0; // set a number like 49 if you want to charge delivery below a threshold
-    const FREE_DELIVERY_ABOVE = 0; // e.g. 999 — leave both at 0 for "always free" delivery
-    const UPI_ID = 'kamalkumar01082-2@okaxis'; // ⚠️ replace with the real UPI ID before going live
+    const DELIVERY_CHARGE = 0;
+    const FREE_DELIVERY_ABOVE = 0;
+    const UPI_ID = 'kamalkumar01082-2@okaxis';
     const UPI_PAYEE_NAME = 'kamal Kumar';
 
     const packInputs = document.querySelectorAll('input[name="pack"]');
@@ -375,6 +396,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const deliveryEl = document.getElementById('summary-delivery');
     const totalEl = document.getElementById('summary-total');
     const submitTotalEl = document.getElementById('submit-total');
+
+    // These UPI elements are OPTIONAL — if you've removed the UPI QR panel
+    // (e.g. because you're using Razorpay instead), all of these will simply
+    // be null and every function below safely no-ops instead of crashing.
     const qrPanel = document.getElementById('upi-qr-panel');
     const qrImage = document.getElementById('upi-qr-image');
     const qrError = document.getElementById('upi-qr-error');
@@ -412,40 +437,45 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateQrCode() {
+      if (!qrImage || !qrAmountEl) return; // UPI panel not present — nothing to do
       const total = getCurrentTotal();
       const upiURI = buildUpiURI(total);
-      // Free, no-signup QR image generator — encodes the UPI URI as a scannable QR
       qrImage.hidden = false;
-      qrError.hidden = true;
+      if (qrError) qrError.hidden = true;
       qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=${encodeURIComponent(upiURI)}`;
       qrAmountEl.textContent = formatINR(total);
     }
 
-    qrImage.addEventListener('error', () => {
-      qrImage.hidden = true;
-      qrError.hidden = false;
-    });
-    qrImage.addEventListener('load', () => {
-      if (qrImage.naturalWidth > 0) {
-        qrImage.hidden = false;
-        qrError.hidden = true;
-      }
-    });
+    if (qrImage) {
+      qrImage.addEventListener('error', () => {
+        qrImage.hidden = true;
+        if (qrError) qrError.hidden = false;
+      });
+      qrImage.addEventListener('load', () => {
+        if (qrImage.naturalWidth > 0) {
+          qrImage.hidden = false;
+          if (qrError) qrError.hidden = true;
+        }
+      });
+    }
 
-   function updateOrderSummary() {
-  const { price } = getSelectedPack();
-  const delivery = (FREE_DELIVERY_ABOVE > 0 && price >= FREE_DELIVERY_ABOVE) ? 0 : DELIVERY_CHARGE;
-  const total = price + delivery;
+    function updateOrderSummary() {
+      const { price } = getSelectedPack();
+      const delivery = (FREE_DELIVERY_ABOVE > 0 && price >= FREE_DELIVERY_ABOVE) ? 0 : DELIVERY_CHARGE;
+      const total = price + delivery;
 
-  subtotalEl.textContent = formatINR(price);
-  deliveryEl.textContent = delivery === 0 ? 'FREE' : formatINR(delivery);
-  totalEl.textContent = formatINR(total);
-  submitTotalEl.textContent = formatINR(total);
+      if (subtotalEl) subtotalEl.textContent = formatINR(price);
+      if (deliveryEl) deliveryEl.textContent = delivery === 0 ? 'FREE' : formatINR(delivery);
+      if (totalEl) totalEl.textContent = formatINR(total);
+      if (submitTotalEl) submitTotalEl.textContent = formatINR(total);
 
-  if (qrPanel && !qrPanel.hidden) updateQrCode();
-}
+      if (qrPanel && !qrPanel.hidden) updateQrCode();
+    }
+
     function toggleQrPanel() {
-      const selectedPayment = document.querySelector('input[name="payment"]:checked').value;
+      if (!qrPanel) return; // no UPI panel in this page — nothing to toggle
+      const checkedPayment = document.querySelector('input[name="payment"]:checked');
+      const selectedPayment = checkedPayment ? checkedPayment.value : '';
       if (selectedPayment === 'Online') {
         qrPanel.hidden = false;
         updateQrCode();
@@ -456,9 +486,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     packInputs.forEach(input => input.addEventListener('change', updateOrderSummary));
     paymentInputs.forEach(input => input.addEventListener('change', toggleQrPanel));
-    upiIdTextEl.textContent = UPI_ID;
-    updateOrderSummary(); // run once on load to reflect the pre-checked pack
-    toggleQrPanel(); // run once on load to reflect the pre-checked payment method
+    if (upiIdTextEl) upiIdTextEl.textContent = UPI_ID;
+
+    updateOrderSummary();
+    toggleQrPanel();
 
     if (copyBtn) {
       copyBtn.addEventListener('click', async () => {
@@ -467,14 +498,15 @@ document.addEventListener('DOMContentLoaded', () => {
           copyBtn.classList.add('copied');
           setTimeout(() => copyBtn.classList.remove('copied'), 1800);
         } catch (err) {
-          // Clipboard API unavailable (e.g. insecure context) — silently ignore
+          /* Clipboard API unavailable — silently ignore */
         }
       });
     }
 
     function setOrderError(group, message) {
       group.classList.add('invalid');
-      group.querySelector('.error-msg').textContent = message;
+      const msg = group.querySelector('.error-msg');
+      if (msg) msg.textContent = message;
     }
     function clearOrderError(group) {
       group.classList.remove('invalid');
@@ -485,7 +517,7 @@ document.addEventListener('DOMContentLoaded', () => {
     orderForm.addEventListener('submit', (e) => {
       e.preventDefault();
       let valid = true;
-      orderSuccessMsg.classList.remove('show');
+      if (orderSuccessMsg) orderSuccessMsg.classList.remove('show');
 
       const nameGroup = orderForm.querySelector('#order-name').closest('.form-group');
       const phoneGroup = orderForm.querySelector('#order-phone').closest('.form-group');
@@ -494,7 +526,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const nameVal = orderForm.querySelector('#order-name').value.trim();
       const phoneVal = orderForm.querySelector('#order-phone').value.trim();
       const addressVal = orderForm.querySelector('#order-address').value.trim();
-      const paymentVal = orderForm.querySelector('input[name="payment"]:checked').value;
+      const checkedPayment = orderForm.querySelector('input[name="payment"]:checked');
+      const paymentVal = checkedPayment ? checkedPayment.value : '';
 
       [nameGroup, phoneGroup, addressGroup].forEach(clearOrderError);
 
@@ -514,8 +547,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const delivery = (FREE_DELIVERY_ABOVE > 0 && price >= FREE_DELIVERY_ABOVE) ? 0 : DELIVERY_CHARGE;
         const total = price + delivery;
         const isOnline = paymentVal === 'Online';
+        const isRazorpay = paymentVal === 'Razorpay';
 
-        const whatsappNumber = '919368443747'; // country code + number, no + or spaces
+        // If paid via Razorpay, include the payment ID captured by the
+        // Razorpay success handler (see window.getRazorpayPaymentId).
+        let paymentLine = 'Cash on Delivery';
+        if (isOnline) paymentLine = `Pay Online (UPI QR scanned — ${UPI_ID})`;
+        if (isRazorpay) {
+          const paymentId = (typeof window.getRazorpayPaymentId === 'function') ? window.getRazorpayPaymentId() : '';
+          paymentLine = paymentId ? `Paid via Razorpay (Payment ID: ${paymentId})` : 'Pay Online via Razorpay (payment not yet completed)';
+        }
+
+        const whatsappNumber = '919368443747';
         const messageLines = [
           'Hello Jeevan Shakti Herbs! I would like to place an order:',
           '',
@@ -524,7 +567,7 @@ document.addEventListener('DOMContentLoaded', () => {
           `*Price:* ${formatINR(price)}`,
           `*Delivery:* ${delivery === 0 ? 'FREE' : formatINR(delivery)}`,
           `*Total Amount:* ${formatINR(total)}`,
-          `*Payment Method:* ${isOnline ? `Pay Online (UPI QR scanned — ${UPI_ID})` : 'Cash on Delivery'}`,
+          `*Payment Method:* ${paymentLine}`,
           '',
           `*Name:* ${nameVal}`,
           `*Phone:* ${phoneVal}`,
@@ -536,14 +579,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const encodedMessage = encodeURIComponent(messageLines.join('\n'));
         const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
 
-        const fallbackLink = orderSuccessMsg.querySelector('.order-fallback-link');
+        const fallbackLink = orderSuccessMsg ? orderSuccessMsg.querySelector('.order-fallback-link') : null;
         if (fallbackLink) fallbackLink.href = whatsappURL;
 
-        orderSuccessMsg.classList.add('show');
+        if (orderSuccessMsg) orderSuccessMsg.classList.add('show');
         window.open(whatsappURL, '_blank', 'noopener');
 
         setTimeout(() => {
-          orderSuccessMsg.classList.remove('show');
+          if (orderSuccessMsg) orderSuccessMsg.classList.remove('show');
           orderForm.reset();
           updateOrderSummary();
           toggleQrPanel();
@@ -555,12 +598,15 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ---------- Floating Back-to-Top Button ---------- */
   const backToTop = document.querySelector('.fab-top');
   function updateBackToTop() {
+    if (!backToTop) return;
     if (window.scrollY > 500) backToTop.classList.add('visible');
     else backToTop.classList.remove('visible');
   }
-  backToTop.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
+  if (backToTop) {
+    backToTop.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
 
   /* Initialize state on load */
   onScroll();
