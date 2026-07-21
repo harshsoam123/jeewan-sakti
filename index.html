@@ -551,14 +551,17 @@
       <div class="gallery-grid" data-reveal>
         <div class="gallery-item" data-caption="Magic Fat Cutter — front view">
           <div class="gallery-visual"><div class="video-wrap">
-  <iframe 
-    src="https://www.youtube.com/embed/pSt5KUlCYds" 
-    title="Jeevan Shakti Herbs Video" 
-    frameborder="0" 
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+  <div class="video-wrap">
+  <iframe
+    id="jsh-yt-video"
+    src="https://www.youtube.com/embed/pSt5KUlCYds?autoplay=1&mute=1&loop=1&playlist=pSt5KUlCYds&controls=1&enablejsapi=1"
+    title="Jeevan Shakti Herbs Video"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
     allowfullscreen
     loading="lazy">
   </iframe>
+</div>
 </div></div>
           <div class="gallery-overlay"><span>Magic Fat Cutter — Front View</span></div>
           <div class="gallery-zoom-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg></div>
@@ -1014,5 +1017,6 @@
   window.getRazorpayPaymentId = function () { return lastPaymentId; };
 })();
 </script>
+
 </body>
 </html>

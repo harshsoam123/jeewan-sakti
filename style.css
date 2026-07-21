@@ -756,7 +756,7 @@ html, body { overflow-x: hidden; max-width: 100%; }
   width: 100%;
   max-width: 800px;
   aspect-ratio: 16/9;
-  margin: 3rem auto;
+  margin: 2rem auto;
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: var(--shadow-soft);
@@ -764,6 +764,42 @@ html, body { overflow-x: hidden; max-width: 100%; }
 .gallery-overlay.video-wrap iframe {
   position: absolute;
   inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+/* =========================================================================
+   VIDEO INSIDE GALLERY — make the YouTube embed fill its gallery-item
+   box completely (same behavior as the gallery photos), on all screens.
+   ========================================================================= */
+.gallery-item .gallery-visual .video-wrap {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  max-width: none !important;
+  aspect-ratio: auto !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+.gallery-item .gallery-visual .video-wrap iframe {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  border: 0 !important;
+}
+
+/* Fallback: if the video is used outside the gallery (standalone), still
+   make it responsive and fill its own wrapper edge-to-edge */
+.video-wrap {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+.video-wrap iframe {
+  display: block;
   width: 100%;
   height: 100%;
   border: 0;
